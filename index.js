@@ -18,17 +18,21 @@ fs.readFile("./comands.txt", "utf-8", (err, content) => {
 	});
 
 	const deleteComands = comandsArr.filter((c) => c.includes(DELETE_FILE));
+	log(comandsArr);
 	const renameComnads = comandsArr.filter((c) =>
 		c.match(/renamefile\w+.\w+to\w+/)
 	);
-	// create file
+	//create file
 	if (createComands.length) {
+		log("f");
 		createComands.map((file) => {
 			createFile(file);
 		});
 	}
+	log(renameComnads);
 	// rename file
 	if (renameComnads.length) {
+		log("he");
 		renameComnads.map((c) => {
 			renameFile(c);
 		});
@@ -72,7 +76,6 @@ function deleteFile(comand) {
 		log(filePath, "deleted");
 	});
 }
-
 // SYNTAX: rename file <oldPATH/> to <newPATH/>
 
 function renameFile(comand) {
@@ -87,5 +90,5 @@ function renameFile(comand) {
 	});
 }
 
-log("directory", process.cwd()); // because of event loop this will run first
-log("directory", __dirname);
+// log("directory", process.cwd()); // because of event Loop this will run first
+// log("directory", __dirname);

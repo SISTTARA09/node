@@ -52,7 +52,7 @@ path.resolve('wwwroot', 'static_files/png/', '../gif/image.gif');
 // log(path.toNamespacedPath(__filename)); // On Windows systems only, returns an equivalent namespace-prefixed path for the given path.
 ```
 
-<h3>fs Module</h3>
+### fs Module
 
 ```js
 const fileContent = fs.readFileSync("./fs/file.txt", "utf-8");
