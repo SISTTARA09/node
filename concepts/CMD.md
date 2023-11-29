@@ -98,7 +98,6 @@ in case of publishing to gitub,
 - use ".gitignore" to igone the ".env" file
 </pre>
 
-
 #### EXIT and exiting codes
 
 ```js
@@ -116,4 +115,82 @@ if (true) {
 	log(true);
 	process.exit(369); // exit with 369 code
 }
+```
+
+#### Taiking inputs
+
+
+##### process.stdin
+
+```js
+process.stdin.on('data', data => { 
+  console.log(`You typed ${data.toString()}`); 
+  process.exit(); 
+});
+```
+ NOTE: 
+<pre>
+using package is more efficient. and best practice
+</pre>
+
+##### prompts package
+
+- install
+
+```sh
+npm i -d prompts
+```
+
+- examples
+```js
+import prompts from "prompts";
+// SINGLE PROMPT
+
+(async () => {
+	const response = await prompts({
+		type: "check",
+		name: "meaning",
+		message: "What is the meaning of life?",
+	});
+
+	log(response.meaning);
+})();
+
+// PROMPT CHAIN
+
+const list = [
+	{
+		type: "text",
+		name: "userName",
+		message: "What is your Name",
+	},
+	{
+		type: "number",
+		name: "age",
+		message: "What is your age",
+	},
+];
+(async () => {
+	const { userName, age } = await prompts(list);
+	log(userName, age);
+})();
+
+// DYNAMIC PROMPTS
+
+const questions = [
+	{
+		type: "text",
+		name: "dish",
+		message: "Do you like pizza?",
+	},
+	{
+		type: (prev) => (prev == "pizza" ? "text" : null),
+		name: "topping",
+		message: "Name a topping",
+	},
+];
+
+(async () => {
+	const response = await prompts(questions);
+})();
 ```
