@@ -119,16 +119,17 @@ if (true) {
 
 #### Taiking inputs
 
-
 ##### process.stdin
 
 ```js
-process.stdin.on('data', data => { 
-  console.log(`You typed ${data.toString()}`); 
-  process.exit(); 
+process.stdin.on("data", (data) => {
+	console.log(`You typed ${data.toString()}`);
+	process.exit();
 });
 ```
- NOTE: 
+
+NOTE:
+
 <pre>
 using package is more efficient. and best practice
 </pre>
@@ -142,6 +143,7 @@ npm i -d prompts
 ```
 
 - examples
+
 ```js
 import prompts from "prompts";
 // SINGLE PROMPT
@@ -193,4 +195,124 @@ const questions = [
 (async () => {
 	const response = await prompts(questions);
 })();
+```
+
+#### Printing output
+
+##### stdout & stderr
+
+<pre>
+same but :
+stdout => console.log </br>
+stderr => console.error </br>
+
+there are more diferences in I/O;
+</pre>
+
+```js
+process.stdout.write("what is your name!\n"); // used to print "what is your name"
+
+// listening to the input field only one time
+process.stdin.once("data", function (data) {
+	const userName = data.toString("utf-8"); // get the user name
+	process.stdout.write(`how old are you? ${userName}`); // print 'how old are you'
+	process.stdin.once("data", function (data) {
+		// listen to age
+		const userAge = data.toString("utf-8"); // get the user age
+		log(`Hello ${userName}, you are ${userAge}`); // log user informations
+		process.stderr.write("football"); // as stdout diference in the I/O stream
+		process.exit(0); // exit the program
+	});
+});
+```
+
+##### Chalk & figlet Packages
+
+- CHALK PACKAGE
+
+install
+
+```sh
+npm i chalk
+```
+
+Syntax:
+
+```js
+log(chalk.bold("Hello world!"));
+```
+
+API
+
+<pre>
+red, blue,...,
+bgRed, bgBlue,...,
+bold, dim, italic, underline,inverse. 
+</pre>
+
+- FIGLET PACKAGE
+
+install
+
+```sh
+npm i figlet
+```
+
+Syntax:
+
+```js
+log(
+	figlet.textSync(
+		"Sisttara",
+		{
+			font: "Efti Robot",
+			horizontalLayout: "fitted",
+			verticalLayout: "controlled smushing",
+		},
+		(err, text) => {
+			if (err) {
+				console.log("Something went wrong...");
+				console.dir(err);
+				return;
+			}
+			console.log(chalk.red(text));
+		}
+	)
+);
+```
+
+API
+
+<pre>
+font: "gost" | "Efti Robot" | "Fun Faces",
+horizontalLayout, verticalLayout: "fitted" | "controlled smushing", 'full',..., 
+width: undefined | 80 | number...,
+whiteSpaceBreak: true | false ,
+</pre>
+
+EXAMPLE:
+
+```js
+import chalk from "chalk";
+import figlet from "figlet";
+
+chalk.bgRed(
+	figlet.text(
+		"Sisttara",
+		{
+			width: undefined,
+			font: "Fun Faces",
+			horizontalLayout: "fitted",
+			verticalLayout: "controlled smushing",
+		},
+		(error, text) => {
+			if (error) {
+				log("Something went wrong...");
+				dir(error);
+				return;
+			}
+			log(chalk.red(text)); //
+		}
+	)
+);
 ```
