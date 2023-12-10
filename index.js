@@ -1,12 +1,12 @@
-const { log } = require("console");
+import { log } from "console";
 
-const fs = require("fs");
-const path = require("node:path");
+import { readFile, writeFile, unlink, rename } from "fs";
+import { parse, isAbsolute } from "node:path";
 
 const CREATE_FILE = "create file".replace(/\s/g, "").toLowerCase();
 const DELETE_FILE = "delete file".replace(/\s/g, "").toLowerCase();
 const RENAME_FILE = "rename file".replace(/\s/g, "").toLowerCase();
-fs.readFile("./comands.txt", "utf-8", (err, content) => {
+readFile("./comands.txt", "utf-8", (err, content) => {
 	if (err) throw err;
 
 	//SYNTAX:: create file: <path>
@@ -49,8 +49,9 @@ fs.readFile("./comands.txt", "utf-8", (err, content) => {
 // SYNTAX: create file <PATH/>
 function createFile(comand) {
 	const filePath = comand.substring(CREATE_FILE.length); // get the file path
-	const fileName = path.parse(filePath).name;
-	fs.writeFile(filePath, `this is ${fileName}`, (err, data) => {
+	const fileName = parse(filePath).name;
+	log(fileName)
+	writeFile(filePath, `this is ${fileName}`, (err, data) => {
 		if (err) {
 			throw err;
 		}
@@ -63,13 +64,13 @@ function createFile(comand) {
 
 function deleteFile(comand) {
 	const filePath = comand.substring(DELETE_FILE.length); // get the file path
-	const isExist = path.isAbsolute(filePath);
+	const isExist = isAbsolute(filePath);
 	if (!isExist) {
 		// check if the the file !exist
 		log("there is no file: ", filePath);
 		return;
 	}
-	fs.unlink(filePath, (err) => {
+	unlink(filePath, (err) => {
 		if (err) {
 			throw err;
 		}
@@ -82,7 +83,7 @@ function renameFile(comand) {
 	const oldPATH = comand.substring(RENAME_FILE.length, comand.indexOf("to"));
 	const newPATHArr = comand.split("to");
 	const newPATH = newPATHArr[1];
-	fs.rename(oldPATH, newPATH, (err) => {
+	rename(oldPATH, newPATH, (err) => {
 		if (err) {
 			return log("there is no file:", err.path);
 		}
